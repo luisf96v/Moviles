@@ -7,14 +7,14 @@ public class Curso implements Serializable {
     String nombre;
     String descripcion;
     int creditos;
-    Estudiante estudiante;
+   // Estudiante estudiante; List
 
     public Curso() {
         this.id = 0;
         this.nombre = "";
         this.descripcion = "";
         this.creditos = 0;
-        this.estudiante=null;
+        //this.estudiante=null;
     }
 
     public int getId() {
@@ -49,11 +49,11 @@ public class Curso implements Serializable {
         this.creditos = creditos;
     }
 
-    public Estudiante getEstudiante() {
+    /*public Estudiante getEstudiante() {
         return estudiante;
     }
 
     public void setEstudiante(Estudiante estudiante) {
         this.estudiante = estudiante;
-    }
+    }*/
 }

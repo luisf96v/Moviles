@@ -64,7 +64,7 @@ public class Control {
     }
 
     public boolean agregarCurso(String nom, String des, int cred, int id_est){
-        return basedatos.agregarCurso(nom, des, cred,id_est);
+        return basedatos.agregarCurso(nom, des, cred);
     }
 
 

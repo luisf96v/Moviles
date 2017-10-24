@@ -45,17 +45,14 @@ public class FormCursoActivity extends Activity {
         this.descripcion = (EditText) findViewById(R.id.descripcion);
         this.creditos = (EditText) findViewById(R.id.creditos);
         this.guardar = (Button) findViewById(R.id.guardarCurso);
-        this.check = (CheckBox) findViewById(R.id.selectOption);
+       // this.check = (CheckBox) findViewById(R.id.selectOption);
 
-        // <-- jalar accion del intent y setearla
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             this.accion = extras.getInt("accion");
             this.mCurso=(Curso) extras.get("curso");
         }
-        //  jalar accion del intent -->
 
-        //cargando datos en spinner
         ArrayList<String> nombresEstudiantes=new ArrayList<>();
         ArrayList<Estudiante> estudiantesBase=control.getListaEstudiantes();
 
@@ -72,10 +69,6 @@ public class FormCursoActivity extends Activity {
             for (int i=0;i<estudiantes.size();i++) {
                 nombresEstudiantes.add(estudiantes.get(i).getNombre());
             }
-            final ArrayAdapter<String> spinner_carreras = new  ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, nombresEstudiantes);
-
-            spinner.setAdapter(spinner_carreras);
-
 
             this.guardar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,7 +84,6 @@ public class FormCursoActivity extends Activity {
                     alert.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
 
-                            //reiniciar los errores
                             nombreCurso.setError(null);
                             descripcion.setError(null);
                             creditos.setError(null);
@@ -102,11 +94,7 @@ public class FormCursoActivity extends Activity {
                             boolean cancel=false;
                             View focusView=null;
 
-                            if(estudiantes.size()<=0){
-                                Toast.makeText(getApplicationContext(),"No hay Estudiantes, cree uno primero",Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                if (TextUtils.isEmpty(nom)) {
+                            if (TextUtils.isEmpty(nom)) {
                                     nombreCurso.setError("Codigo Vacio");
                                     focusView = nombreCurso;
                                     cancel = true;
@@ -132,8 +120,7 @@ public class FormCursoActivity extends Activity {
                                     c.setNombre(nom);
                                     c.setDescripcion(desc);
                                     c.setCreditos(Integer.parseInt(cre));
-                                    c.setEstudiante(estudiantes.get(spinner.getSelectedItemPosition()));
-                                    control.agregarCurso(nom, desc, Integer.parseInt(cre), estudiantes.get(spinner.getSelectedItemPosition()).getId());
+                                    control.agregarCurso(nom,desc, Integer.parseInt(cre),0);
                                     Intent intent = new Intent(FormCursoActivity.this, CursosActivity.class);
                                     FormCursoActivity.this.startActivity(intent);
                                 }
@@ -142,7 +129,6 @@ public class FormCursoActivity extends Activity {
 
 
 
-                        }
                     });
                     alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
@@ -162,19 +148,6 @@ public class FormCursoActivity extends Activity {
         else if(this.accion == 2){
 
             this.cargarDatos();
-
-            final ArrayList<Estudiante> estudiantes;
-            if(mCurso.getEstudiante() != null){
-                estudiantes = this.reordenarListaEstudiantes(mCurso.getEstudiante(),estudiantesBase);
-            }else {
-                estudiantes = estudiantesBase;
-            }
-            for (int i=0;i<estudiantes.size();i++) {
-                nombresEstudiantes.add(estudiantes.get(i).getNombre());
-            }
-            final ArrayAdapter<String> spinner_carreras = new  ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, nombresEstudiantes);
-
-            spinner.setAdapter(spinner_carreras);
 
             this.guardar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -200,12 +173,7 @@ public class FormCursoActivity extends Activity {
 
                             boolean cancel=false;
                             View focusView=null;
-
-                            if(estudiantes.size()<=0){
-                                Toast.makeText(getApplicationContext(),"No hay Estudiantes, cree uno primero",Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                if (TextUtils.isEmpty(nom)) {
+                                 if (TextUtils.isEmpty(nom)) {
                                     nombreCurso.setError("Codigo Vacio");
                                     focusView = nombreCurso;
                                     cancel = true;
@@ -227,14 +195,14 @@ public class FormCursoActivity extends Activity {
                                 if (cancel) {
                                     focusView.requestFocus();
                                 } else {
-                                    if(control.updateCurso(Integer.parseInt(idCurso.getText().toString()), nom, desc, Integer.parseInt(cre), estudiantes.get(spinner.getSelectedItemPosition()).getId())){
+                                    if(control.updateCurso(Integer.parseInt(idCurso.getText().toString()), nom, desc, Integer.parseInt(cre),0)){
                                         Toast.makeText(getApplicationContext(),"Curso Editado",Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(FormCursoActivity.this, CursosActivity.class);
                                         FormCursoActivity.this.startActivity(intent);
                                     }
                                     else Toast.makeText(getApplicationContext(),"Error al editar el curso",Toast.LENGTH_SHORT).show();
                                 }
-                            }
+
 
                         }
                     });

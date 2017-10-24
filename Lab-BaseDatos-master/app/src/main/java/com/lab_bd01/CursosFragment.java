@@ -112,7 +112,7 @@ public class CursosFragment extends Fragment {
             holder.nombreText.setText(list.get(position).getNombre());
             holder.descripcionText.setText(list.get(position).getDescripcion());
             holder.creditosText.setText(String.valueOf(list.get(position).getCreditos()));
-            holder.estudiante.setText(list.get(position).getEstudiante().getNombre());
+           // holder.estudiante.setText(list.get(position).getEstudiante().getNombre());
         }
 
         @Override
@@ -138,7 +138,7 @@ public class CursosFragment extends Fragment {
             nombreText = (TextView) v.findViewById(R.id.nombreCursoText);
             descripcionText = (TextView) v.findViewById(R.id.descripcionCursoText);
             creditosText = (TextView) v.findViewById(R.id.creditosCursoText);
-            estudiante=(TextView) v.findViewById(R.id.estudianteCurso);
+           // estudiante=(TextView) v.findViewById(R.id.estudianteCurso);
 
             edit = (ImageView) v.findViewById(R.id.editCurso);
             delete = (ImageView) v.findViewById(R.id.deleteCurso);

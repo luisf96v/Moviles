@@ -38,7 +38,7 @@ public class BaseDatos extends SQLiteOpenHelper {
 
         String crearestudiante = "create table " + TABLA_ESTUDIANTE +
                 "(" +
-                "id integer primary key, " + // Define a primary key
+                "id integer primary key, " +
                 "nombre text, " +
                 "apellido1 text, " +
                 "apellido2 text, " +
@@ -50,15 +50,11 @@ public class BaseDatos extends SQLiteOpenHelper {
                 "id integer primary key autoincrement, "+
                 "nombre text, "+
                 "descripcion text, "+
-                "creditos integer, "+
-                "estudiante_id integer REFERENCES "+TABLA_ESTUDIANTE+
+                "creditos integer "+
                 ");";
 
         db.execSQL(crearestudiante);
-        Log.d("Base de Datos", "Tabla estudiante");
         db.execSQL(crear_curso);
-        Log.d("Base de Datos", "Tabla curso");
-
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -223,10 +219,10 @@ public class BaseDatos extends SQLiteOpenHelper {
     //CRUD CURSO
 
 
-    public boolean agregarCurso(String nom, String des, int cred, int id_est){
+    public boolean agregarCurso(String nom, String des, int cred){
         try{
             SQLiteDatabase db=this.getWritableDatabase();
-            db.execSQL("insert into Curso(nombre, descripcion, creditos, estudiante_id) values ('"+nom+"', '"+des+"', '"+cred+"', '"+id_est+"');");
+            db.execSQL("insert into Curso(nombre, descripcion, creditos) values ('"+nom+"', '"+des+"', '"+cred+"');");
             return true;
         }catch (SQLiteException ex){
             Log.e("Base de Datos", "Excepcion en agregarCurso", ex);
@@ -234,7 +230,7 @@ public class BaseDatos extends SQLiteOpenHelper {
         }
     }
 
-    public Curso buscarCurso(String nombre, String descripcion, int creditos, int estudiante_id){
+    public Curso buscarCurso(String nombre, String descripcion, int creditos){
         try{
             SQLiteDatabase db=this.getReadableDatabase();
             String query= "select * from Curso where nombre='"+nombre+"' and descripcion='"+descripcion+"' and creditos='"+creditos+"';";
@@ -244,7 +240,6 @@ public class BaseDatos extends SQLiteOpenHelper {
             aux.setNombre(cursor.getString(cursor.getColumnIndexOrThrow("nombre")));
             aux.setDescripcion(cursor.getString(cursor.getColumnIndexOrThrow("descripcion")));
             aux.setCreditos(cursor.getInt(cursor.getColumnIndexOrThrow("creditos")));
-            aux.setEstudiante(estudianteById(cursor.getInt(cursor.getColumnIndexOrThrow("id"))));
             return aux;
 
         }catch (SQLiteException ex){
@@ -263,7 +258,6 @@ public class BaseDatos extends SQLiteOpenHelper {
             aux.setNombre(cursor.getString(cursor.getColumnIndexOrThrow("nombre")));
             aux.setDescripcion(cursor.getString(cursor.getColumnIndexOrThrow("descripcion")));
             aux.setCreditos(cursor.getInt(cursor.getColumnIndexOrThrow("creditos")));
-            aux.setEstudiante(estudianteById(cursor.getInt(cursor.getColumnIndexOrThrow("estudiante_id"))));
 
             return aux;
 
@@ -277,7 +271,7 @@ public class BaseDatos extends SQLiteOpenHelper {
     public boolean updateCurso(int id, String nom, String des, int cred, int id_est){
         try{
             SQLiteDatabase db=this.getWritableDatabase();
-            db.execSQL("update Curso set nombre='"+nom+"', descripcion='"+des+"', creditos='"+cred+"', estudiante_id='"+id_est+"' where id="+id+";");
+            db.execSQL("update Curso set nombre='"+nom+"', descripcion='"+des+"', creditos='"+cred+"' where id="+id+";");
             return true;
         }catch (SQLiteException ex){
             Log.e("Base de Datos", "Excepcion en updateCurso", ex);
@@ -311,7 +305,6 @@ public class BaseDatos extends SQLiteOpenHelper {
                     aux.setNombre(cursor.getString(cursor.getColumnIndexOrThrow("nombre")));
                     aux.setDescripcion(cursor.getString(cursor.getColumnIndexOrThrow("descripcion")));
                     aux.setCreditos(cursor.getInt(cursor.getColumnIndexOrThrow("creditos")));
-                    aux.setEstudiante(estudianteById(cursor.getInt(cursor.getColumnIndexOrThrow("estudiante_id"))));
                     lista.add(aux);
                     cursor.moveToNext();
                 }
@@ -338,7 +331,6 @@ public class BaseDatos extends SQLiteOpenHelper {
                     aux.setNombre(cursor.getString(cursor.getColumnIndexOrThrow("nombre")));
                     aux.setDescripcion(cursor.getString(cursor.getColumnIndexOrThrow("descripcion")));
                     aux.setCreditos(cursor.getInt(cursor.getColumnIndexOrThrow("creditos")));
-                    aux.setEstudiante(estudianteById(cursor.getInt(cursor.getColumnIndexOrThrow("estudiante_id"))));
                     lista.add(aux);
                     cursor.moveToNext();
                 }
@@ -354,7 +346,7 @@ public class BaseDatos extends SQLiteOpenHelper {
 
 
     public ArrayList<Curso> getCursosDeEstudiante(int idEstudiante){
-        try{
+        /*try{
             SQLiteDatabase db=this.getReadableDatabase();
             String query= "select * from Curso where estudiante_id='"+idEstudiante+"';";
             Cursor cursor = db.rawQuery(query,null);
@@ -366,7 +358,6 @@ public class BaseDatos extends SQLiteOpenHelper {
                     aux.setNombre(cursor.getString(cursor.getColumnIndexOrThrow("nombre")));
                     aux.setDescripcion(cursor.getString(cursor.getColumnIndexOrThrow("descripcion")));
                     aux.setCreditos(cursor.getInt(cursor.getColumnIndexOrThrow("creditos")));
-                    aux.setEstudiante(estudianteById(cursor.getInt(cursor.getColumnIndexOrThrow("estudiante_id"))));
                     lista.add(aux);
                     cursor.moveToNext();
                 }
@@ -377,7 +368,8 @@ public class BaseDatos extends SQLiteOpenHelper {
         }catch (SQLiteException ex){
             Log.e("Base de Datos", "Excepcion en getListaCursos", ex);
             return null;
-        }
+        }*/
+        return null;
     }
 
 
