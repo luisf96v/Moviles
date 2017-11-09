@@ -2,11 +2,9 @@ import BO.CourseBO;
 import BO.StudentBO;
 import Model.Course;
 import Model.Student;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +18,7 @@ import org.json.JSONObject;
  *
  * @author luisf69v@gmail.com
  */
-@WebServlet(name = "rgsServlet", urlPatterns = {"/rgs"})
+@WebServlet(name = "rgsServlet", urlPatterns = {"/rgs2"})
 public final class Servlet extends HttpServlet {
 
     /**
