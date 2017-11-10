@@ -12,6 +12,9 @@ package com.lab_bd01;
         import android.widget.Button;
         import android.widget.Toast;
 
+        import java.net.HttpURLConnection;
+        import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -54,4 +57,6 @@ public class MainActivity extends AppCompatActivity {
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
     }
+
+
 }

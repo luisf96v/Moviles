@@ -3,6 +3,7 @@ package com.lab_bd01;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -15,6 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lab_bd01.Modelo.Estudiante;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 public class FormEstudianteActivity extends Activity {
@@ -76,6 +82,15 @@ public class FormEstudianteActivity extends Activity {
                             String ape1=apellido1.getText().toString();
                             String ape2=apellido2.getText().toString();
                             String eda=edad.getText().toString();
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("& id=").append(ced)
+                                    .append("& name=").append(nom)
+                                    .append("& lastN1=").append(ape1)
+                                    .append("& lastN2=").append(ape2)
+                                    .append("& age=").append(eda) ;
+
+
+
 
                             boolean cancel=false;
                             View focusView=null;
@@ -85,39 +100,43 @@ public class FormEstudianteActivity extends Activity {
                                 focusView = idEstudiante;
                                 cancel = true;
                             }
-
-                                if (TextUtils.isEmpty(nom)) {
+                            else if (TextUtils.isEmpty(nom)) {
                                     nombreEstudiante.setError("Nombre Vacio");
                                     focusView = nombreEstudiante;
                                     cancel = true;
-                                }
+                                 }
 
-                                if (TextUtils.isEmpty(ape1)) {
-                                    apellido1.setError("Apellido 1 Vacio");
-                                    focusView = apellido1;
-                                    cancel = true;
-                                }
-                            if (TextUtils.isEmpty(ape2)) {
-                                apellido2.setError("Apellido 2 Vacio");
-                                focusView = apellido2;
-                                cancel = true;
-                            }
-
-                                if (TextUtils.isEmpty(eda)) {
-                                    edad.setError("Titulo Vacio");
-                                    focusView = edad;
-                                    cancel = true;
-                                }
+                                 else if (TextUtils.isEmpty(ape1)) {
+                                         apellido1.setError("Apellido 1 Vacio");
+                                         focusView = apellido1;
+                                         cancel = true;
+                                       }
+                                       else if  (TextUtils.isEmpty(ape2)) {
+                                                apellido2.setError("Apellido 2 Vacio");
+                                                focusView = apellido2;
+                                                cancel = true;
+                                            } else if (TextUtils.isEmpty(eda)) {
+                                                        edad.setError("Titulo Vacio");
+                                                        focusView = edad;
+                                                        cancel = true;
+                                                   }
 
 
                                 if (cancel) {
                                     focusView.requestFocus();
                                 } else {
-                                    if(control.agregarEstudiante(Integer.parseInt(ced),nom,ape1,ape2,Integer.parseInt(eda))){
+                                    try {
+                                        saveStudent(sb.toString());
                                         Intent intent = new Intent(FormEstudianteActivity.this, EstudiantesActivity.class);
                                         Toast.makeText(getApplicationContext(),"Estudiante agregado",Toast.LENGTH_SHORT).show();
                                         FormEstudianteActivity.this.startActivity(intent);
-                                    }else Toast.makeText(getApplicationContext(),"Error, la cedula ya existe",Toast.LENGTH_SHORT).show();
+                                    } catch (IOException e) {
+                                        Toast.makeText(getApplicationContext(),"Error, la cedula ya existe",Toast.LENGTH_SHORT).show();
+                                        e.printStackTrace();
+                                    }
+                                    catch (Exception e){
+                                        Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+                                    }
 
                                 }
 
@@ -239,6 +258,13 @@ public class FormEstudianteActivity extends Activity {
 
     }
 
+    public void saveStudent(String sb) throws IOException{
+        URL url = null;
+        url = new URL("http://192.168.1.105:8080/Servlet/rgs2?action=saveStudent"+sb);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.connect();
+        urlConnection.disconnect();
+    }
 
 
     public void cargarDatos(){
